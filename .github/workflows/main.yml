@@ -1,1 +1,28 @@
+# File: .github/workflows/main.yml
 
+name: Create Issue
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create issue
+        uses: octokit/octokit-rest-api-action@v2
+        with:
+          method: POST
+          route: repos/{owner}/{repo}/issues
+          owner: sudorunoscar
+          repo: githubactions
+          headers: |
+            Accept: application/vnd.github.v3+json
+          body: |
+            {
+              "title": "Test Issue",
+              "body": "This is a test issue created by GitHub Actions",
+              "labels": ["created-by-workflow"]
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
