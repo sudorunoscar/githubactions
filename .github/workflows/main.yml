@@ -17,10 +17,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { github, inputs } = require('@actions/github');
+            const { owner, repo } = github.context.repo;
+            
             github.issues.create({
               owner: 'sudorunoscar',
               repo: 'githubactions',
-              title: github.context.inputs.title,
-              body: github.context.inputs.body,
+              title: inputs.title,
+              body: inputs.body,
               labels: ['created-by-workflow']
             })
