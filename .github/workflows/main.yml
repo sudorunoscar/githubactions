@@ -14,20 +14,20 @@ jobs:
     steps:
       - name: Create issue
         uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const octokit = require('@octokit/rest')({
-              auth: process.env.GITHUB_TOKEN
-            });
-            
-            octokit.issues.create({
-              owner: 'sudorunoscar',
-              repo: 'githubactions',
-              title: process.env.TITLE,
-              body: process.env.BODY,
-              labels: ['created-by-workflow']
-            })
         env:
           TITLE: ${{ github.event.inputs.title }}
           BODY: ${{ github.event.inputs.body }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install @octokit/rest
+          const octokit = require('@octokit/rest')({
+            auth: process.env.GITHUB_TOKEN
+          });
+          
+          octokit.issues.create({
+            owner: 'sudorunoscar',
+            repo: 'githubactions',
+            title: process.env.TITLE,
+            body: process.env.BODY,
+            labels: ['created-by-workflow']
+          })
