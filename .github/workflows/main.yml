@@ -17,13 +17,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { github, inputs } = require('@actions/github');
-            const { owner, repo } = github.context.repo;
+            const octokit = require('@octokit/rest')({
+              auth: process.env.GITHUB_TOKEN
+            });
             
-            github.issues.create({
+            octokit.issues.create({
               owner: 'sudorunoscar',
               repo: 'githubactions',
-              title: inputs.title,
-              body: inputs.body,
+              title: process.env.TITLE,
+              body: process.env.BODY,
               labels: ['created-by-workflow']
             })
+        env:
+          TITLE: ${{ github.event.inputs.title }}
+          BODY: ${{ github.event.inputs.body }}
