@@ -1,4 +1,1 @@
-            - name: Octokit.js
-  # uses: juliangruber/octokit-action@e47ba029b2fd259de3a7e9fc371b0eb4a984dd5e
-  uses: juliangruber/octokit-action@v1.0.2
-          
+
