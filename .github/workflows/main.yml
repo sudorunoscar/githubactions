@@ -20,7 +20,7 @@ jobs:
             github.issues.create({
               owner: 'sudorunoscar',
               repo: 'githubactions',
-              title: '${{ github.event.inputs.title }}',
-              body: '${{ github.event.inputs.body }}',
+              title: github.context.inputs.title,
+              body: github.context.inputs.body,
               labels: ['created-by-workflow']
             })
