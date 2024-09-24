@@ -1,4 +1,4 @@
-name: Create Issue
+name: Issue
 
 on:
   workflow_dispatch:
@@ -19,8 +19,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const octokit = github.getOctokit(context.repo.token);
-            await octokit.issues.create({
+            await github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: github.event.inputs.title,
