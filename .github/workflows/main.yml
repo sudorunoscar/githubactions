@@ -1,12 +1,14 @@
-# File: .github/workflows/main.yml
-
 name: Create Issue
 
 on:
   workflow_dispatch:
     inputs:
-      title: { description: 'Issue title', required: true }
-      body: { description: 'Issue body', required: true }
+      title: 
+        description: 'Issue title'
+        required: true
+      body: 
+        description: 'Issue body'
+        required: true
 
 jobs:
   create-issue:
@@ -14,20 +16,14 @@ jobs:
     steps:
       - name: Create issue
         uses: actions/github-script@v6
-        env:
-          TITLE: ${{ github.event.inputs.title }}
-          BODY: ${{ github.event.inputs.body }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm install @octokit/rest
-          const octokit = require('@octokit/rest')({
-            auth: process.env.GITHUB_TOKEN
-          });
-          
-          octokit.issues.create({
-            owner: 'sudorunoscar',
-            repo: 'githubactions',
-            title: process.env.TITLE,
-            body: process.env.BODY,
-            labels: ['created-by-workflow']
-          })
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const octokit = github.getOctokit(context.repo.token);
+            await octokit.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: github.event.inputs.title,
+              body: github.event.inputs.body,
+              labels: ['created-by-workflow']
+            })
