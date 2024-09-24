@@ -1,0 +1,38 @@
+# File: .github/workflows/create-issue.yml
+
+name: Create Issue
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Issue title'
+        required: true
+      body:
+        description: 'Issue body'
+        required: true
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create issue
+        uses: octokit/octokit-rest-api-action@v2
+        with:
+          method: 'POST'
+          route: 'repos/{owner}/{repo}/issues'
+          owner: 'sudorunoscar'
+          repo: 'githubactions'
+          headers:
+            Accept: 'application/vnd.github.v3+json'
+          body: |
+            {
+              "title": "${{ github.event.inputs.title }}",
+              "body": "${{ github.event.inputs.body }}",
+              "labels": ["created-by-workflow"]
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
